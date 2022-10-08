@@ -3,18 +3,20 @@ from pydantic import BaseModel
 class TrieNode(BaseModel):
     children : dict
     isWordEnd : bool
-    meaning : str
+    meanings : list
+    type : list
 
 class Trie(BaseModel):
     root : TrieNode
 
-    def insert(self , word : str , meaning : str):
+    def insert(self , word : str , meanings : list , type : list ):
         current = self.root
         for i in word.lower():
-            current.children.setdefault(i , TrieNode(children = dict() , isWordEnd = False , meaning = ""))
+            current.children.setdefault(i , TrieNode(children = dict() , isWordEnd = False , meanings = [] , type = []))
             current = current.children.get(i)
         current.isWordEnd = True
-        current.meaning = meaning
+        current.meanings = meanings
+        current.type = type
 
     def prefixSearch(self , prefix : str):
         current = self.root
@@ -26,15 +28,18 @@ class Trie(BaseModel):
         self.getWords(current , prefix , words)
         return words
 
-    def getWords(self , node : TrieNode , word : str , words : list):
+    def getWordsWithPrefix(self , node : TrieNode , word : str , words : list):
         for char in node.children.keys():
                 self.getWords(node.children.get(char) , word + char , words)
         if node.isWordEnd:
-            words.append({word : node.meaning})
+            words.append({word : {"meanings" : node.meanings , "speech_type" : node.type}})
 
-    ''' def as_dict(self):
-        dict = {"isWordEnd" : self.root.isWordEnd , "meaning" : self.root.meaning}
+    def getWord(self , word : str):
         current = self.root
-        for i in current.children: '''
-
+        for i in word.lower():
+            if i not in current.children:
+                return []
+            current = current.children.get(i)
+        if current.isWordEnd:
+            return [{word : {"meanings" : current.meanings , "speech_type" : current.type}}]
 

@@ -13,14 +13,7 @@ class Output(BaseModel):
 async def getHello():
     return {"Hello" : "React"}
 
-@app.get("/tries")
-async def getTrie():
-    out = database.start()
-    out_lst = []
-    for i in out:
-        val = list(i.items())[0]
-        out_lst.append(Output(word = val[0] , meaning = val[1]))
-    return out_lst
+
 
 if __name__ == "__main__":
     import uvicorn
