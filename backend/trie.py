@@ -6,6 +6,12 @@ class TrieNode(BaseModel):
     meanings : list
     type : list
 
+class Output(BaseModel):
+    word : str
+    meanings : list
+    type : list
+
+
 class Trie(BaseModel):
     root : TrieNode
 
@@ -25,14 +31,14 @@ class Trie(BaseModel):
             if i not in current.children:
                 return []
             current = current.children.get(i)
-        self.getWords(current , prefix , words)
+        self.getWordsWithPrefix(current , prefix , words)
         return words
 
     def getWordsWithPrefix(self , node : TrieNode , word : str , words : list):
         for char in node.children.keys():
-                self.getWords(node.children.get(char) , word + char , words)
+                self.getWordsWithPrefix(node.children.get(char) , word + char , words)
         if node.isWordEnd:
-            words.append({word : {"meanings" : node.meanings , "speech_type" : node.type}})
+            words.append(Output(word = word , meanings = node.meanings , type = node.type))
 
     def getWord(self , word : str):
         current = self.root
@@ -41,5 +47,5 @@ class Trie(BaseModel):
                 return []
             current = current.children.get(i)
         if current.isWordEnd:
-            return [{word : {"meanings" : current.meanings , "speech_type" : current.type}}]
+            return [Output(word = word , meanings = current.meanings , type = current.type)]
 
