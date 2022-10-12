@@ -1,4 +1,3 @@
-from collections import defaultdict
 from pydantic import BaseModel
 class TrieNode(BaseModel):
     children : dict
