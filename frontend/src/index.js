@@ -3,15 +3,23 @@ import ReactDOM from 'react-dom/client';
 import './index.css' ;
 import App from './App';
 import Form from "./Form";
+import Dictionary from "./Dictionary"
 import reportWebVitals from './reportWebVitals';
 import {Dropdown} from "bootstrap";
+import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Form />
-  </React.StrictMode>
+    <React.StrictMode>
+        <BrowserRouter>
+            <Routes>
+                <Route path = "/" element = {<Form/>}> </Route>
+                <Route path = "/getMeaning/" element = {<Dictionary/>}> </Route>
+            </Routes>
+        </BrowserRouter>
+    </React.StrictMode>
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

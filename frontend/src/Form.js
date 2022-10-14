@@ -1,6 +1,7 @@
-import React, {Component, useState} from "react";
-
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
 import axios from "axios";
+import {Button} from "react-bootstrap";
 
 class Form extends Component{
     initialState = {
@@ -27,14 +28,19 @@ class Form extends Component{
 
     }
 
+
     render() {
         const count = 0
+        const link = "/getMeaning/"
         return(
             <form>
                 <label htmlFor="word"> Enter Word </label>
                 <input type= "word" list = "suggestions" name = "word" id = "word" onChange={this
                     .handleChange} autoComplete={"off"}/>
-                <datalist id = "suggestions"> {this.state.autoFillList.map(this.showSuggestions)}</datalist>
+                <Link to={link}>
+                <Button className= "search-button" id = "search-button" > Search </Button>
+                </Link>
+                <datalist id = "suggestions" onClick={this.searchWord}> {this.state.autoFillList.map(this.showSuggestions)}</datalist>
             </form>
         );
     }
@@ -45,7 +51,7 @@ class Form extends Component{
     }
 
     showSuggestions(item) {
-        return <option key = {item.word}  value={item.word}/>
+        return <option key = {item.word}  value={item.word} />
     }
 }
 
