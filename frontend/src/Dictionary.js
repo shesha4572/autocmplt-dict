@@ -1,25 +1,56 @@
-import React , {Component} from "react";
+import React, {Component, useEffect} from "react";
 import axios from "axios";
 
 
 class Dictionary extends React.Component{
 
+
     initialState = {
         word : document.getElementById("word").value,
-        jsonWord : axios.get("http://localhost:8000/getMeanings/" + document.getElementById("word").value).then((res) => this.setState({jsonWord : res.data}))
+        jsonWord :
+            {
+               word : "",
+               meanings : [],
+               type : []
+            }
     }
 
     state = this.initialState
 
+    componentDidMount() {
+        axios.get("http://localhost:8000/getMeanings/" + this.state.word).then((res) => {this.setState({jsonWord : res.data})})
+
+    }
+
     render() {
+
         return(
             <div>
                 <h1> {this.state.word} </h1>
-                <p>
-                    {this.state.jsonWord.word} {this.state.jsonWord.meanings}
-                </p>
+                <div>
+                    {this.parseMeanings().map(this.printMeanings)}
+                </div>
             </div>
         );
+    }
+
+    parseMeanings(){
+        console.log(this.state.jsonWord.meanings)
+        console.log(this.state.jsonWord.type)
+        let out = []
+        for (let i = 0; i < this.state.jsonWord.meanings.length; i++) {
+            out.push([this.state.jsonWord.meanings[i] , this.state.jsonWord.type[i]])
+        }
+        return out
+    }
+
+    printMeanings(lst){
+        return(
+            <div>
+                <p> Meaning : {lst[0]}</p>
+                <small> Speech type : {lst[1]}</small>
+            </div>
+        )
     }
 
 

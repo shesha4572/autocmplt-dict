@@ -30,8 +30,7 @@ class Form extends Component{
 
 
     render() {
-        const count = 0
-        const link = "/getMeaning/"
+        const link = "/:getMeaning/"
         return(
             <form>
                 <label htmlFor="word"> Enter Word </label>

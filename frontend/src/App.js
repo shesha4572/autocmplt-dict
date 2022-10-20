@@ -1,24 +1,19 @@
 import './App.css';
-import axios from "axios";
-import {useState , useEffect} from "react";
-import Dropdown from 'react-bootstrap/Dropdown';
-import {Button} from "react-bootstrap";
-import {forEach} from "react-bootstrap/ElementChildren";
+import {Route , Routes} from "react-router-dom";
+import Form from "./Form";
+import Dictionary from "./Dictionary"
+import React from "react";
 
 function App() {
-
-  const [word , setWord] = useState([{}]);
-  useEffect(() => {axios.get("http://localhost:8000/getMeanings/computer").then((res) => setWord(res.data))} , []);
-  console.log(word);
-  return(
-      <div>
-         {word.word} {}
-          {word.meanings} {}
-          {word.type}
-
-      </div>
-  );
-
+    let initialState = {
+        isFormFilled : false
+    }
+    return(
+        <Routes>
+            <Route exact path = "/" element = {<Form/>}> </Route>
+                <Route exact path = "/:getMeaning" element = {<Dictionary/>}> </Route>
+        </Routes>
+    )
 }
 
 
