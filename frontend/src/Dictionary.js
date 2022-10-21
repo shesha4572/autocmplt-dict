@@ -1,5 +1,6 @@
 import React, {Component, useEffect} from "react";
 import axios from "axios";
+import {json} from "react-router-dom";
 
 
 class Dictionary extends React.Component{
@@ -35,8 +36,6 @@ class Dictionary extends React.Component{
     }
 
     parseMeanings(){
-        console.log(this.state.jsonWord.meanings)
-        console.log(this.state.jsonWord.type)
         let out = []
         for (let i = 0; i < this.state.jsonWord.meanings.length; i++) {
             out.push([this.state.jsonWord.meanings[i] , this.state.jsonWord.type[i]])
@@ -45,6 +44,16 @@ class Dictionary extends React.Component{
     }
 
     printMeanings(lst){
+        let errorOut = ["Word does not Exist" , "Error"]
+        if(JSON.stringify(lst) === JSON.stringify(errorOut)){
+            console.log("Wrong")
+            return (
+                <div>
+                    <p> Word not Found in Dictionary </p>
+                </div>
+            )
+        }
+
         return(
             <div>
                 <p> Meaning : {lst[0]}</p>

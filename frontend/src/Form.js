@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
+import {Link, Navigate, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {Button} from "react-bootstrap";
 
@@ -10,7 +10,9 @@ class Form extends Component{
             word: "",
             meanings : [],
             type : []
-        }]
+        }],
+        linkMeaning : "/:getMeaning/",
+        count : 10
     }
     
     state = this.initialState
@@ -18,34 +20,32 @@ class Form extends Component{
     handleChange = (event) => {
         this.state = this.initialState
         const {value} = event.target
-
-        this.setState({
-                word : value
-            }
-        )
-
+        if(value === ""){
+            this.state = this.initialState
+            return;
+        }
+        console.log(value)
+        this.setState({word: value})
         this.GetAutoFillSuggestions(value)
-
     }
 
 
     render() {
-        const link = "/:getMeaning/"
+        console.log(this.state.autoFillList)
         return(
             <form>
                 <label htmlFor="word"> Enter Word </label>
-                <input type= "word" list = "suggestions" name = "word" id = "word" onChange={this
+                <input type= "word" list = "suggestions" name = "word" id = "word" onInput={this
                     .handleChange} autoComplete={"off"}/>
-                <Link to={link}>
+                <Link to={this.state.linkMeaning}>
                 <Button className= "search-button" id = "search-button" > Search </Button>
                 </Link>
-                <datalist id = "suggestions" onClick={this.searchWord}> {this.state.autoFillList.map(this.showSuggestions)}</datalist>
+                <datalist id = "suggestions"> {this.state.autoFillList.map((el , index) =>  {return index <= this.state.count ? this.showSuggestions(el) : null})}</datalist>
             </form>
         );
     }
 
     GetAutoFillSuggestions(word) {
-        var count = 0
         axios.get("http://localhost:8000/searchPrefix/" + word).then((res) => this.setState({autoFillList : res.data}))
     }
 

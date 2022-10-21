@@ -43,8 +43,8 @@ class Trie(BaseModel):
         current = self.root
         for i in word.lower():
             if i not in current.children:
-                return []
+                return Output(word = word , meanings = ["Word does not Exist"] , type = ["Error"])
             current = current.children.get(i)
         if current.isWordEnd:
-            return [Output(word = word , meanings = current.meanings , type = current.type)]
+            return Output(word = word , meanings = current.meanings , type = current.type)
 
