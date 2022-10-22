@@ -19,7 +19,8 @@ class Dictionary extends React.Component{
     state = this.initialState
 
     componentDidMount() {
-        axios.get("http://localhost:8000/getMeanings/" + this.state.word).then((res) => {this.setState({jsonWord : res.data})})
+        console.log(this.state.word.split('/').join('%2'))
+        axios.get("http://localhost:8000/getMeanings/" + this.state.word.split('/').join('%2')).then((res) => {this.setState({jsonWord : res.data})})
 
     }
 

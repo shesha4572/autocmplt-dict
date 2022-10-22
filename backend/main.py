@@ -21,10 +21,9 @@ async def getWordsWithPrefix(prefix: str):
 
 @app.get("/getMeanings/{word}")
 async def getMeanings(word: str):
-    return wordsTrie.getWord(word)
+    return wordsTrie.getWord(word.replace("%2" , "/"))
 
 
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app)

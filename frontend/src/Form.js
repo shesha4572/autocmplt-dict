@@ -18,10 +18,15 @@ class Form extends Component{
     state = this.initialState
 
     handleChange = (event) => {
+        if(event.key === "Enter"){
+            console.log("Enter pressed")
+            event.preventDefault()
+            document.getElementById("search-button").click()
+            return;
+        }
         this.state = this.initialState
         const {value} = event.target
         if(value === ""){
-            this.state = this.initialState
             return;
         }
         console.log(value)
@@ -29,13 +34,15 @@ class Form extends Component{
         this.GetAutoFillSuggestions(value)
     }
 
+    componentDidMount() {
+        document.addEventListener("keydown" , this.handleChange)
+    }
 
     render() {
-        console.log(this.state.autoFillList)
         return(
             <form>
                 <label htmlFor="word"> Enter Word </label>
-                <input type= "word" list = "suggestions" name = "word" id = "word" onInput={this
+                <input type= "word" list = "suggestions" name = "word" id = "word" onKeyDown={this
                     .handleChange} autoComplete={"off"}/>
                 <Link to={this.state.linkMeaning}>
                 <Button className= "search-button" id = "search-button" > Search </Button>
