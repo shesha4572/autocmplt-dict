@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+
+COUNT = 15
 class TrieNode(BaseModel):
     children : dict
     isWordEnd : bool
@@ -34,8 +36,10 @@ class Trie(BaseModel):
         return words
 
     def getWordsWithPrefix(self , node : TrieNode , word : str , words : list):
+        if len(words) > COUNT:
+            return
         for char in node.children.keys():
-                self.getWordsWithPrefix(node.children.get(char) , word + char , words)
+            self.getWordsWithPrefix(node.children.get(char) , word + char , words)
         if node.isWordEnd:
             words.append(Output(word = word , meanings = node.meanings , type = node.type))
 

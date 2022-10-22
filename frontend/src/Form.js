@@ -11,8 +11,7 @@ class Form extends Component{
             meanings : [],
             type : []
         }],
-        linkMeaning : "/:getMeaning/",
-        count : 10
+        linkMeaning : "/:getMeaning/"
     }
     
     state = this.initialState
@@ -34,6 +33,7 @@ class Form extends Component{
         this.GetAutoFillSuggestions(value)
     }
 
+
     componentDidMount() {
         document.addEventListener("keydown" , this.handleChange)
     }
@@ -42,12 +42,12 @@ class Form extends Component{
         return(
             <form>
                 <label htmlFor="word"> Enter Word </label>
-                <input type= "word" list = "suggestions" name = "word" id = "word" onKeyDown={this
+                <input type= "word" list = "suggestions" name = "word" id = "word" onChange={this
                     .handleChange} autoComplete={"off"}/>
                 <Link to={this.state.linkMeaning}>
                 <Button className= "search-button" id = "search-button" > Search </Button>
                 </Link>
-                <datalist id = "suggestions"> {this.state.autoFillList.map((el , index) =>  {return index <= this.state.count ? this.showSuggestions(el) : null})}</datalist>
+                <datalist id = "suggestions"> {this.state.autoFillList.map(this.showSuggestions)}</datalist>
             </form>
         );
     }
