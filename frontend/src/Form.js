@@ -42,7 +42,7 @@ class Form extends Component{
         return(
             <form>
                 <label htmlFor="word"> Enter Word </label>
-                <input type= "word" list = "suggestions" name = "word" id = "word" onChange={this
+                <input type= "word" list = "suggestions" name = "word" id = "word" onKeyUp={this
                     .handleChange} autoComplete={"off"}/>
                 <Link to={this.state.linkMeaning}>
                 <Button className= "search-button" id = "search-button" > Search </Button>
