@@ -11,6 +11,7 @@ function App() {
             <Route exact path = "/" element = {<Form/>}/>
             <Route path = "/:getMeaning" element = {<PrivateRoute> <Dictionary/></PrivateRoute>}/>
         </Routes>
+
     )
 }
 
