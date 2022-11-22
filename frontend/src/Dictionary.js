@@ -1,13 +1,12 @@
 import React, {Component, useEffect} from "react";
 import axios from "axios";
-import {json} from "react-router-dom";
 
 
 class Dictionary extends React.Component{
 
 
     initialState = {
-        word : document.getElementById("word").value,
+        word : "",
         jsonWord :
             {
                word : "",
@@ -19,9 +18,17 @@ class Dictionary extends React.Component{
     state = this.initialState
 
     componentDidMount() {
-        console.log(this.state.word.split('/').join('%2'))
-        axios.get("http://localhost:8000/getMeanings/" + this.state.word.split('/').join('%2')).then((res) => {this.setState({jsonWord : res.data})})
+        this.setState({word : this.props.word})
+        console.log(this.props.word.split('/').join('%2'))
+        axios.get("http://localhost:8000/getMeanings/" + this.props.word.split('/').join('%2')).then((res) => {this.setState({jsonWord : res.data})})
+    }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.props.word !== prevProps.word){
+            this.setState({word : this.props.word})
+            console.log(this.props.word.split('/').join('%2'))
+            axios.get("http://localhost:8000/getMeanings/" + this.props.word.split('/').join('%2')).then((res) => {this.setState({jsonWord : res.data})})
+        }
     }
 
     render() {

@@ -9,7 +9,7 @@ function App() {
     return(
         <Routes>
             <Route exact path = "/" element = {<Form/>}/>
-            <Route path = "/:getMeaning" element = {<PrivateRoute> <Dictionary/></PrivateRoute>}/>
+            <Route path = "/:getMeaning" element = {<Dictionary/>}/>
         </Routes>
 
     )
