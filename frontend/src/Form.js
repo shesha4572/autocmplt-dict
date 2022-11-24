@@ -55,20 +55,19 @@ class Form extends Component{
         const aStyle={width:'4px'}
         return(
             <div style={myStyle}>
+                <Grid>
                 <div>
                 <form style={fStyle}>
                     <Grid item xs={1} style={aStyle}><AutoStoriesIcon/></Grid>
-                    <Grid item xs={1} style={sStyle} ><SearchIcon/></Grid>
                     <h1 style={hStyle}>Dictionary</h1>
-                    <input type= "word" style={iStyle} placeholder={"Search a word"} list = "suggestions" name = "word" id = "word" onKeyUp={this
-                        .handleChange} autoComplete={"off"}/>
-                       <Button variant={"contained"} style={{color:"white",backgroundColor:"blueviolet",height:'4vh',borderRadius:"25px",fontVariant:"oldstyle-nums",marginTop:'8px'}} onClick={() => this.setState({renderMeanings : true})} id = "search-button">Search</Button>
-                    <Autocomplete filterOptions={e => e} onClick = {(e , value) => {this.setState({word : value}); document.getElementById("search-button").click();}} onInputChange={(e , value) => {if(value !== "") {this.setState({word : value}); this.GetAutoFillSuggestions(e.target.value);}}} freeSolo renderInput={(params) => <TextField variant = "standard" {...params} label="Word" />} options={this.state.autoFillList.map(e => e.word)}/>
+                       <Button  variant={"contained"} style={{color:"white",backgroundColor:"blueviolet",height:'4vh',borderRadius:"25px",fontVariant:"oldstyle-nums",marginTop:'8px'}} onClick={() => this.setState({renderMeanings : true})} id = "search-button">Search</Button>
+                    <Autocomplete filterOptions={e => e} onClick = {(e , value) => {this.setState({word : value}); document.getElementById("search-button").click();}} onInputChange={(e , value) => {if(value !== "") {this.setState({word : value}); this.GetAutoFillSuggestions(e.target.value); this.setState({renderMeanings : false})}}} freeSolo renderInput={(params) => <TextField variant = "standard" {...params} label="Word" />} options={this.state.autoFillList.map(e => e.word)}/>
                     </form>
                     </div>
                 <br/>
-                {this.state.renderMeanings ? <Dictionary word = {this.state.word}/> : <div/>}
-            </div>
+                {this.state.word !== "" && this.state.renderMeanings ? <Dictionary word = {this.state.word} displayBoolean = {this.state.renderMeanings}/> : <div/>}
+                </Grid>
+                </div>
         );
     }
 
@@ -76,9 +75,7 @@ class Form extends Component{
         axios.get("http://localhost:8000/searchPrefix/" + word).then((res) => this.setState({autoFillList : res.data}))
     }
 
-    showSuggestions(item) {
-        return <option key = {item.word}  value={item.word} />
-    }
+
 }
 
 

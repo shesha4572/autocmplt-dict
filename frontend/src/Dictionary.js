@@ -1,5 +1,7 @@
 import React, {Component, useEffect} from "react";
 import axios from "axios";
+import {Button} from "@mui/material"
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 
 
 class Dictionary extends React.Component{
@@ -24,23 +26,39 @@ class Dictionary extends React.Component{
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.props.word !== prevProps.word){
+        if(this.props.word !== prevProps.word && this.props.word !== ""){
             this.setState({word : this.props.word})
             console.log(this.props.word.split('/').join('%2'))
             axios.get("http://localhost:8000/getMeanings/" + this.props.word.split('/').join('%2')).then((res) => {this.setState({jsonWord : res.data})})
         }
     }
 
-    render() {
+    handleSpeechClick = () => {
+          var speakObj = new SpeechSynthesisUtterance();
+          speakObj.text = this.state.word;
+          speakObj.voice = speechSynthesis.getVoices().filter(function(voice) {
+              return voice.name === "Google UK English Female"
+          })[0];
+          speechSynthesis.speak(speakObj);
+    }
 
-        return(
-            <div>
-                <h1> {this.state.word} </h1>
+    render() {
+        if (this.props.displayBoolean) {
+            return (
                 <div>
-                    {this.parseMeanings().map(this.printMeanings)}
+                    <h1> {this.state.word} </h1>
+                    <VolumeUpIcon onClick={this.handleSpeechClick}></VolumeUpIcon>
+                    <div>
+                        {this.parseMeanings().map(this.printMeanings)}
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
+        else{
+            return (
+                <div></div>
+            )
+        }
     }
 
     parseMeanings(){
