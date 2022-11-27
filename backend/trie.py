@@ -11,8 +11,6 @@ class MeaningOutput(BaseModel):
     word : str
     meanings : dict
 
-class AutoFillOutput(BaseModel):
-    word : str
 
 class NoWordFound(Exception):
     pass
@@ -37,6 +35,7 @@ class Trie(BaseModel):
                 return []
             current = current.children.get(i)
         self.getWordsWithPrefix(current , prefix , words)
+        words.sort(key=len)
         return words
 
     def getWordsWithPrefix(self , node : TrieNode , word : str , words : list):
@@ -45,7 +44,7 @@ class Trie(BaseModel):
         for char in node.children.keys():
             self.getWordsWithPrefix(node.children.get(char) , word + char , words)
         if node.isWordEnd:
-            words.append(AutoFillOutput(word = word))
+            words.append(word)
 
     def getWord(self , word : str):
         current = self.root

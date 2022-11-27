@@ -11,7 +11,7 @@ wordsTrie: trie.Trie = database.getTrie()
 @app.get("/searchPrefix/{prefix}")
 async def getWordsWithPrefix(prefix: str):
     output = wordsTrie.prefixSearch(prefix)
-    return output
+    return {"result" : output}
 
 
 @app.get("/getMeanings/{word}")

@@ -11,11 +11,7 @@ import Dictionary from "./Dictionary";
 class Form extends Component {
     initialState = {
         word: "",
-        autoFillList: [{
-            word: "",
-            meanings: [],
-            type: []
-        }],
+        autoFillList: [],
         renderMeanings: false
     }
 
@@ -31,28 +27,8 @@ class Form extends Component {
 
 
     render() {
-        const fStyle = {
-            width: '480px',
-            background: 'white',
-            borderRadius: '25px',
-            padding: '28px 28px 45px',
-            fontsize: '28px',
-            fontweight: '500',
-            textAlign: 'center'
-        }
-        const myStyle = {display: 'flex', alignItems: 'center', justifyContent: 'center'}
-        const iStyle = {
-            height: '45px', width: '400px', outline: 'none',
-            padding: '0 45px', borderRadius: '5px', border: '1px solid #999'
-        }
-        const sStyle = {
-            position: 'fixed', top: '50.5%', color: '#999', transform: 'translateY(-50%)',
-            left: '630px', fontsize: '16px', pointerevents: 'none'
-        }
-        const hStyle = {
-            fontweight: '600', backgroundImage: 'conic-gradient(#553c9a, #ee4b2b, #00c2cb,#553c9a)',
-            color: 'transparent', backgroundClip: 'text', webkitBackgroundClip: 'text'
-        }
+
+
         return (
             <div>
                 <Grid>
@@ -74,7 +50,7 @@ class Form extends Component {
                                 document.getElementById("search-button").click();
                             }} freeSolo renderInput={(params) => <TextField
                                 variant="outlined" style={{marginTop:'10px',width:'100%',backgroundColor:'white',borderRadius:'5px'}} {...params} placeholder={"Search a word"} onKeyUp={e => this.handleChange(e)}/>}
-                                                            options={this.state.autoFillList.map(e => e.word)}/></Grid>
+                                                            options={this.state.autoFillList.map(e => e)}/></Grid>
                             <Grid item xs paddingLeft={5} paddingTop={1}><Button id={"search-button"} variant={"contained"} style={{
                                 color: "white",
                                 backgroundColor: "blueviolet",
@@ -93,7 +69,7 @@ class Form extends Component {
     }
 
     GetAutoFillSuggestions(word) {
-        axios.get("http://localhost:8000/searchPrefix/" + word).then((res) => this.setState({autoFillList: res.data}))
+        axios.get("http://localhost:8000/searchPrefix/" + word).then((res) => this.setState({autoFillList: res.data.result}))
     }
 
 
