@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import {Button} from "react-bootstrap"
 import Grid from '@mui/material/Grid';
-import {Autocomplete, Container, InputAdornment, Select, TextField} from "@mui/material";
+import {Autocomplete, Container, InputAdornment, Select, TextField, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Dictionary from "./Dictionary";
@@ -56,10 +56,12 @@ class Form extends Component {
         return (
             <div>
                 <Grid>
-                    <div style={{paddingBottom: 20}}>
-                        <Grid container xs spacing={3}>
-                            <Grid item xs><AutoStoriesIcon/></Grid>
-                            <Grid item xs={9}><Autocomplete filterOptions={e => e} onInputChange={(e, value) => {
+                    <div style={{paddingBottom: 20,marginTop:'30px'}}>
+                        <Grid container xs sx={{padding : "30px 10px 10px 10px"}}>
+                            <Grid item xs paddingLeft={5} marginRight={'25px'}>
+                                <Grid item xs paddingLeft={3} paddingTop={-1}><AutoStoriesIcon fontSize={"large"} style={{color:'white'}}/></Grid>
+                                <Grid item xs paddingTop={-1}><Typography color={'white'}>Dictionary</Typography></Grid></Grid>
+                            <Grid item xs={10}><Autocomplete filterOptions={e => e} onInputChange={(e, value) => {
                                 if (value.trim() !== "") {
                                     this.setState({word: value});
                                     this.GetAutoFillSuggestions(value);
@@ -71,16 +73,15 @@ class Form extends Component {
                                 this.setState({word: value});
                                 document.getElementById("search-button").click();
                             }} freeSolo renderInput={(params) => <TextField
-                                variant="standard" {...params} label="Word" onKeyUp={e => this.handleChange(e)}/>}
+                                variant="outlined" style={{marginTop:'10px',width:'100%',backgroundColor:'white',borderRadius:'5px'}} {...params} placeholder={"Search a word"} onKeyUp={e => this.handleChange(e)}/>}
                                                             options={this.state.autoFillList.map(e => e.word)}/></Grid>
-                            <Grid item xs><Button id={"search-button"} variant={"contained"} style={{
+                            <Grid item xs paddingLeft={5} paddingTop={1}><Button id={"search-button"} variant={"contained"} style={{
                                 color: "white",
                                 backgroundColor: "blueviolet",
-                                height: '4vh',
-                                borderRadius: "25px",
+                                height: '5vh',
                                 fontVariant: "oldstyle-nums",
                                 marginTop: '8px'
-                            }} onClick={() => this.setState({renderMeanings: true})}>Search</Button></Grid>
+                            }}onClick={() => this.setState({renderMeanings: true})}>Search</Button></Grid>
                         </Grid>
                     </div>
                     <br/>
