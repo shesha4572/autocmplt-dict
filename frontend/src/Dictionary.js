@@ -2,7 +2,6 @@ import React, {Component, useEffect} from "react";
 import axios from "axios";
 import {List, ListItem, ListItemIcon, Typography} from "@mui/material"
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import CircleIcon from '@mui/icons-material/Circle';
 
 
 class Dictionary extends React.Component{

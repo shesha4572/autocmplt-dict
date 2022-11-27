@@ -58,4 +58,5 @@ class Trie(BaseModel):
             for i in zip(current.meanings , current.type):
                 meanings_dict[i[1]].append(i[0])
             return MeaningOutput(word = word , meanings = meanings_dict)
+        raise NoWordFound
 
