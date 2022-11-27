@@ -48,7 +48,7 @@ class Dictionary extends React.Component{
         if (this.props.displayBoolean && this.state.jsonWord.word !== "") {
             return (
                 <div style={{paddingLeft:'150px'}}>
-                    <Typography style={{fontFamily : "Playfair Display" , fontWeight : "bold",color:'white'}} variant={"h2"}> {this.state.jsonWord.word.charAt(0).toUpperCase() + this.state.jsonWord.word.slice(1)} </Typography>
+                    <Typography style={{fontFamily : "Playfair Display" , fontWeight : "bold",color:'white'}} variant={"h2"}> {this.state.jsonWord.word.charAt(0).toUpperCase() + this.state.jsonWord.word.slice(1).toLowerCase()} </Typography>
                     <Typography variant={"h3"} style={{fontFamily : "Times New Roman" , fontWeight : "bolder",color:'white'}}> {Object.keys(this.state.jsonWord.meanings).map((el , ind) => el + (ind === (Object.keys(this.state.jsonWord.meanings).length - 1) ? "   " : " / "))} </Typography>
                     <VolumeUpIcon style={{padding : "10px 10px 10px 10px",color:'white'}} onClick={this.handleSpeechClick}></VolumeUpIcon>
                     <div style={{color:"white"}}>

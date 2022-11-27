@@ -51,13 +51,7 @@ class Form extends Component {
                             }} freeSolo renderInput={(params) => <TextField
                                 variant="outlined" style={{marginTop:'10px',width:'100%',backgroundColor:'white',borderRadius:'5px'}} {...params} placeholder={"Search a word"} onKeyUp={e => this.handleChange(e)}/>}
                                                             options={this.state.autoFillList.map(e => e)}/></Grid>
-                            <Grid item xs paddingLeft={5} paddingTop={1}><Button id={"search-button"} variant={"contained"} style={{
-                                color: "white",
-                                backgroundColor: "blueviolet",
-                                height: '5vh',
-                                fontVariant: "oldstyle-nums",
-                                marginTop: '8px'
-                            }}onClick={() => this.setState({renderMeanings: true})}>Search</Button></Grid>
+                            <Grid item xs  paddingLeft={2} paddingTop={1}><SearchIcon style={{color:'white',marginTop:'13px',marginLeft:'5px'}} fontSize={'large'} onClick={() => this.setState({renderMeanings: true})}/></Grid>
                         </Grid>
                     </div>
                     <br/>
