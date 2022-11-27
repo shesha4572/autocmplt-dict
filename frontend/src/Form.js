@@ -15,7 +15,6 @@ class Form extends Component{
             meanings : [],
             type : []
         }],
-        linkMeaning : "/:getMeaning/",
         renderMeanings : false
     }
     
@@ -43,9 +42,7 @@ class Form extends Component{
 
     render() {
         const fStyle={width:'480px',background:'white',borderRadius:'25px',padding:'28px 28px 45px',fontsize:'28px',fontweight:'500',textAlign:'center'}
-        const myStyle={display:'flex',alignItems:'center',justifyContent:'center',
-            backgroundColor:'lightblue',
-        backgroundImage:'url("https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.macmillandictionaryblog.com%2Fwp-content%2Fuploads%2F2018%2F01%2Fdictionary-1024x575.jpg&imgrefurl=https%3A%2F%2Fwww.macmillandictionaryblog.com%2Fdictionary&tbnid=RZxnbZNskBoghM&vet=12ahUKEwi49Z-Vjr37AhUUn9gFHdqUBA8QMygkegUIARC5Ag..i&docid=8XEI-GjGozMzfM&w=1024&h=575&q=dictionary%20image&ved=2ahUKEwi49Z-Vjr37AhUUn9gFHdqUBA8QMygkegUIARC5Ag")'}
+        const myStyle={display:'flex',alignItems:'center',justifyContent:'center'}
         const iStyle={height:'45px',width:'400px',outline:'none',
         padding:'0 45px',borderRadius: '5px',border:'1px solid #999'}
         const sStyle={position:'fixed',top:'50.5%',color:'#999',transform:'translateY(-50%)',
@@ -56,7 +53,7 @@ class Form extends Component{
         return(
             <div style={myStyle}>
                 <Grid>
-                <div>
+                <div style={{paddingBottom : 20}}>
                 <form style={fStyle}>
                     <Grid item xs={1} style={aStyle}><AutoStoriesIcon/></Grid>
                     <h1 style={hStyle}>Dictionary</h1>

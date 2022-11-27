@@ -1,55 +1,60 @@
 import React, {Component, useEffect} from "react";
 import axios from "axios";
-import {Button} from "@mui/material"
+import {List, ListItem, ListItemIcon, Typography} from "@mui/material"
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import CircleIcon from '@mui/icons-material/Circle';
 
 
 class Dictionary extends React.Component{
 
 
     initialState = {
-        word : "",
         jsonWord :
             {
-               word : "",
-               meanings : [],
-               type : []
+                word: "",
+                meanings: {}
             }
     }
 
     state = this.initialState
 
     componentDidMount() {
-        this.setState({word : this.props.word})
-        console.log(this.props.word.split('/').join('%2'))
-        axios.get("http://localhost:8000/getMeanings/" + this.props.word.split('/').join('%2')).then((res) => {this.setState({jsonWord : res.data})})
+        this.getWord()
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if(this.props.word !== prevProps.word && this.props.word !== ""){
-            this.setState({word : this.props.word})
-            console.log(this.props.word.split('/').join('%2'))
-            axios.get("http://localhost:8000/getMeanings/" + this.props.word.split('/').join('%2')).then((res) => {this.setState({jsonWord : res.data})})
+            this.getWord()
         }
     }
 
-    handleSpeechClick = () => {
-          var speakObj = new SpeechSynthesisUtterance();
-          speakObj.text = this.state.word;
-          speakObj.voice = speechSynthesis.getVoices().filter(function(voice) {
-              return voice.name === "Google UK English Female"
-          })[0];
-          speechSynthesis.speak(speakObj);
+    getWord = () => {
+        console.log(this.props.word.split('/').join('%2'))
+        axios.get("http://localhost:8000/getMeanings/" + this.props.word.split('/').join('%2')).then((res) => {this.setState({jsonWord : res.data})}).catch(error => {
+            if(error.response.status === 404){
+                alert("Word doesnt exist in Dictionary")
+            }
+        })
     }
 
+    handleSpeechClick = () => {
+        const speakObj = new SpeechSynthesisUtterance();
+        speakObj.text = this.state.jsonWord.word;
+        speakObj.rate = 0.9
+        speakObj.voice = speechSynthesis.getVoices().filter((voice) => voice.name === "Samantha")[0]
+        speechSynthesis.speak(speakObj);
+    }
+
+
     render() {
-        if (this.props.displayBoolean) {
+        if (this.props.displayBoolean && this.state.jsonWord.word !== "") {
             return (
                 <div>
-                    <h1> {this.state.word} </h1>
-                    <VolumeUpIcon onClick={this.handleSpeechClick}></VolumeUpIcon>
+                    <Typography style={{fontFamily : "Playfair Display" , fontWeight : "bold"}} variant={"h2"}> {this.state.jsonWord.word.charAt(0).toUpperCase() + this.state.jsonWord.word.slice(1)} </Typography>
+                    <Typography variant={"h3"} style={{fontFamily : "Times New Roman"  , fontWeight : "bolder"}}> {Object.keys(this.state.jsonWord.meanings).map((el , ind) => el + (ind === (Object.keys(this.state.jsonWord.meanings).length - 1) ? "   " : " / "))} </Typography>
+                    <VolumeUpIcon style={{padding : "10px 10px 10px 10px"}} onClick={this.handleSpeechClick}></VolumeUpIcon>
                     <div>
-                        {this.parseMeanings().map(this.printMeanings)}
+                        {Object.keys(this.state.jsonWord.meanings).map(e => this.printMeanings(e))}
                     </div>
                 </div>
             );
@@ -61,33 +66,18 @@ class Dictionary extends React.Component{
         }
     }
 
-    parseMeanings(){
-        let out = []
-        for (let i = 0; i < this.state.jsonWord.meanings.length; i++) {
-            out.push([this.state.jsonWord.meanings[i] , this.state.jsonWord.type[i]])
-        }
-        return out
-    }
 
-    printMeanings(lst){
-        let errorOut = ["Word does not Exist" , "Error"]
-        if(JSON.stringify(lst) === JSON.stringify(errorOut)){
-            console.log("Wrong")
-            return (
-                <div>
-                    <p> Word not Found in Dictionary </p>
-                </div>
-            )
-        }
 
+    printMeanings(type){
         return(
-            <div>
-                <p> Meaning : {lst[0]}</p>
-                <small> Speech type : {lst[1]}</small>
+            <div style={{padding : "10px 10px 10px 10px"}}>
+                <Typography variant={"h5"}>{type}</Typography>
+                <List sx = {{listStyleType : "disc" , pl : 4}}>{this.state.jsonWord.meanings[type].map(e => <div>
+                    <ListItem sx = {{display : "list-item"}}><Typography variant={"h6"}>{e}</Typography></ListItem>
+                </div>)}</List>
             </div>
         )
     }
-
 
 }
 

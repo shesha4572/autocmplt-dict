@@ -7,11 +7,15 @@ class TrieNode(BaseModel):
     meanings : list
     type : list
 
-class Output(BaseModel):
+class MeaningOutput(BaseModel):
     word : str
-    meanings : list
-    type : list
+    meanings : dict
 
+class AutoFillOutput(BaseModel):
+    word : str
+
+class NoWordFound(Exception):
+    pass
 
 class Trie(BaseModel):
     root : TrieNode
@@ -41,14 +45,17 @@ class Trie(BaseModel):
         for char in node.children.keys():
             self.getWordsWithPrefix(node.children.get(char) , word + char , words)
         if node.isWordEnd:
-            words.append(Output(word = word , meanings = node.meanings , type = node.type))
+            words.append(AutoFillOutput(word = word))
 
     def getWord(self , word : str):
         current = self.root
         for i in word.lower():
             if i not in current.children:
-                return Output(word = word , meanings = ["Word does not Exist"] , type = ["Error"])
+                raise NoWordFound
             current = current.children.get(i)
         if current.isWordEnd:
-            return Output(word = word , meanings = current.meanings , type = current.type)
+            meanings_dict = {i : [] for i in set(current.type)}
+            for i in zip(current.meanings , current.type):
+                meanings_dict[i[1]].append(i[0])
+            return MeaningOutput(word = word , meanings = meanings_dict)
 
