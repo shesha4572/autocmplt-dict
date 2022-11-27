@@ -11,7 +11,8 @@ class Dictionary extends React.Component{
             {
                 word: "",
                 meanings: {}
-            }
+            },
+            voice : speechSynthesis.getVoices()
     }
 
     state = this.initialState
@@ -28,7 +29,7 @@ class Dictionary extends React.Component{
 
     getWord = () => {
         console.log(this.props.word.split('/').join('%2'))
-        axios.get("http://localhost:8000/getMeanings/" + this.props.word.split('/').join('%2')).then((res) => {this.setState({jsonWord : res.data})}).catch(error => {
+        axios.get("http://localhost:8000/getMeanings/" + this.props.word.split('/').join('%2')).then((res) => {this.setState({jsonWord : res.data , voice : speechSynthesis.getVoices()})}).catch(error => {
             if(error.response.status === 404){
                 alert("Word doesnt exist in Dictionary")
             }
@@ -39,7 +40,7 @@ class Dictionary extends React.Component{
         const speakObj = new SpeechSynthesisUtterance();
         speakObj.text = this.state.jsonWord.word;
         speakObj.rate = 0.9
-        speakObj.voice = speechSynthesis.getVoices().filter((voice) => voice.name === "Samantha")[0]
+        speakObj.voice = this.state.voice.filter((voice) => voice.name === "Samantha")[0]
         speechSynthesis.speak(speakObj);
     }
 
